@@ -483,3 +483,32 @@ test('assertNotHasText calls `assert.equal` passing in whether or not the elemen
 
   pageObject.assertNotHasText('some-selector', 'the element doesnt have this text', 'some message');
 });
+
+test('newPage switches to a new page object', function(assert) {
+  assert.expect(2);
+
+  const mockAssert = {
+    ok(bool, message) {
+      assert.ok(bool, message);
+    }
+  };
+
+  class AnotherPageObject extends PageObject {
+    itWorked() {
+      assert.ok(true, 'itWorked was called on 2nd page object');
+      return this;
+    }
+
+    passesTheRightAssert() {
+      this.assert.ok(true, 'passes assert into the new page object');
+      return this;
+    }
+  }
+
+  const pageObject = new PageObject({ assert: mockAssert });
+
+  pageObject
+    .newPage(AnotherPageObject)
+      .itWorked()
+      .passesTheRightAssert();
+});

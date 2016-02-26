@@ -173,6 +173,27 @@ export default class PageObject {
   }
 
 // Test Helpers
+
+  /**
+   * Returns a new page object so you can switch to another component on the
+   * page.
+   *
+   * ```js
+   *  test('it should...', function(assert) {
+   *    new LoginPage({ assert })
+   *      .login()
+   *      .newPage(Dashboard)
+   *        .openGraph()
+   *        .doStuff();
+   *  })
+   * ```
+   * @public
+   * @return {object}
+   */
+  newPage(POClass) {
+    return new POClass({ assert: this.assert });
+  }
+
   /**
    * Pauses a test so you can look around within a PageObject chain.
    *
